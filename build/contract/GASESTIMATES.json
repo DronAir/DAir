@@ -1,0 +1,30 @@
+{
+	"Creation": {
+		"codeDepositCost": "1471800",
+		"executionCost": "infinite",
+		"totalCost": "infinite"
+	},
+	"External": {
+		"": "infinite",
+		"allowance(address,address)": "1080",
+		"approve(address,uint256)": "22353",
+		"balanceOf(address)": "735",
+		"basePrice()": "524",
+		"cap()": "304",
+		"decimals()": "294",
+		"decreaseApproval(address,uint256)": "infinite",
+		"finalizeIco()": "infinite",
+		"increaseApproval(address,uint256)": "infinite",
+		"name()": "infinite",
+		"owner()": "662",
+		"remainingTokens()": "702",
+		"startIco()": "21314",
+		"symbol()": "infinite",
+		"tokenReserve()": "546",
+		"tokensSold()": "526",
+		"totalSupply()": "446",
+		"transfer(address,uint256)": "infinite",
+		"transferFrom(address,address,uint256)": "infinite",
+		"transferOwnership(address)": "22983"
+	}
+}
