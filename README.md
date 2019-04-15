@@ -2,13 +2,18 @@
 
 <a href="https://dronair.io">https://dronair.io</a>
 
+<h2> What is Dronair? </h2>
+     The DronAir Operating Platform will provide a disruptive solution for switching global logistics industries to unmanned systems. As an independent blockchain-based Operating Platform open to all industry participants it will contain critical information for each stage of lifecycle of a cargo robot. The operations and access to clients of DAIR drone will be used to develop and test the DronAir. We aim to set the standards  for  the new  industry in robotic delivery in areas  such  as financing, manufacturing, operations, maintenance, insurance, and authorization of drones and robots in the air, on the ground and at the sea.
+<br>
+For more information, see: <a href="https://dronair.io">HERE!!</a>
+<br><br>
 
-Set up the Testing Environment, you must have truffle installed.
+
+<h2>Set up the Testing Environment, you must have truffle installed.</h2>
 
 ```
 npm install truffle -g truffle
 ```
-
 Some dependancies
 ```
  npm install --save-dev chai
@@ -24,7 +29,6 @@ truffle init
 
 You may need to edit the Migrations.sol file to rename the constructor as follows:
 
-
 From this
 ```
   function Migrations() public {
@@ -38,7 +42,6 @@ To This
     owner = msg.sender;
   }
 ```
-
 Then you can execute
 To compile the code
 ```
