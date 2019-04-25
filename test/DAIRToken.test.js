@@ -1,4 +1,4 @@
-const Token = artifacts.require('./AENToken.sol'); //must be the name of the contract file
+const Token = artifacts.require('./DAIRToken.sol'); //must be the name of the contract file
 const suite = require('../node_modules/token-test-suite/lib/suite');
 
 contract('Total Supply', function(accounts) {
