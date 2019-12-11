@@ -1,22 +1,13 @@
 {
-	"66188463": "decreaseApproval(address,uint256)",
+	"39509351": "increaseAllowance(address,uint256)",
 	"dd62ed3e": "allowance(address,address)",
 	"095ea7b3": "approve(address,uint256)",
 	"70a08231": "balanceOf(address)",
-	"c7876ea4": "basePrice()",
-	"355274ea": "cap()",
 	"313ce567": "decimals()",
-	"903a3ef6": "finalizeIco()",
-	"d73dd623": "increaseApproval(address,uint256)",
+	"a457c2d7": "decreaseAllowance(address,uint256)",
 	"06fdde03": "name()",
-	"8da5cb5b": "owner()",
-	"bf583903": "remainingTokens()",
-	"89311e6f": "startIco()",
 	"95d89b41": "symbol()",
-	"cbcb3171": "tokenReserve()",
-	"518ab2a8": "tokensSold()",
 	"18160ddd": "totalSupply()",
 	"a9059cbb": "transfer(address,uint256)",
-	"23b872dd": "transferFrom(address,address,uint256)",
-	"f2fde38b": "transferOwnership(address)"
+	"23b872dd": "transferFrom(address,address,uint256)"
 }

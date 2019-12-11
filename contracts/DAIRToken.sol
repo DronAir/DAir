@@ -1,369 +1,378 @@
-pragma solidity ^0.4.25;
+pragma solidity ^0.5.11;
 
 // ----------------------------------------------------------------------------
-// 'Dronair' token contract
+// 'Dronair Token' contract
 //
 // Symbol                        : DAIR
-// Name                          : Dronair
+// Name                          : Dronair Token
 // Total supply                  : 140*10^9
-//Token for public sale          : 56*10^9   (40%)
-//Token for private sale         : 28*10^9   (20%)
-//Token for Team-Adv             : 14*10^9   (10%)
-//Token for Marketing & Adoption : 25.2*10^9 (18%)
-//Token for Foundation           : 16.8*10^9 (12%)
 // Decimals                      : 18
 //
 // Enjoy.
-//
-//
 // ----------------------------------------------------------------------------
-
-
-// ----------------------------------------------------------------------------
-// Safe maths
-// ----------------------------------------------------------------------------
-
 library SafeMath {
     /**
-     * @dev Multiplies two numbers, throws on overflow.
-     **/
-    function mul(uint256 a, uint256 b) internal pure returns (uint256 c) {
+     * @dev Returns the addition of two unsigned integers, reverting on
+     * overflow.
+     *
+     * Counterpart to Solidity's `+` operator.
+     *
+     * Requirements:
+     * - Addition cannot overflow.
+     */
+    function add(uint256 a, uint256 b) internal pure returns (uint256) {
+        uint256 c = a + b;
+        require(c >= a, "SafeMath: addition overflow");
+
+        return c;
+    }
+
+    /**
+     * @dev Returns the subtraction of two unsigned integers, reverting on
+     * overflow (when the result is negative).
+     *
+     * Counterpart to Solidity's `-` operator.
+     *
+     * Requirements:
+     * - Subtraction cannot overflow.
+     */
+    function sub(uint256 a, uint256 b) internal pure returns (uint256) {
+        require(b <= a, "SafeMath: subtraction overflow");
+        uint256 c = a - b;
+
+        return c;
+    }
+
+    /**
+     * @dev Returns the multiplication of two unsigned integers, reverting on
+     * overflow.
+     *
+     * Counterpart to Solidity's `*` operator.
+     *
+     * Requirements:
+     * - Multiplication cannot overflow.
+     */
+    function mul(uint256 a, uint256 b) internal pure returns (uint256) {
+        // Gas optimization: this is cheaper than requiring 'a' not being zero, but the
+        // benefit is lost if 'b' is also tested.
+        // See: https://github.com/OpenZeppelin/openzeppelin-solidity/pull/522
         if (a == 0) {
             return 0;
         }
-        c = a * b;
-        assert(c / a == b);
+
+        uint256 c = a * b;
+        require(c / a == b, "SafeMath: multiplication overflow");
+
         return c;
     }
 
     /**
-     * @dev Integer division of two numbers, truncating the quotient.
-     **/
+     * @dev Returns the integer division of two unsigned integers. Reverts on
+     * division by zero. The result is rounded towards zero.
+     *
+     * Counterpart to Solidity's `/` operator. Note: this function uses a
+     * `revert` opcode (which leaves remaining gas untouched) while Solidity
+     * uses an invalid opcode to revert (consuming all remaining gas).
+     *
+     * Requirements:
+     * - The divisor cannot be zero.
+     */
     function div(uint256 a, uint256 b) internal pure returns (uint256) {
-        // assert(b > 0); // Solidity automatically throws when dividing by 0
-/**
- * @title SafeMath
- * @dev Math operations with safety checks that throw on error
- */
-        // uint256 c = a / b;
+        // Solidity only automatically asserts when dividing by 0
+        require(b > 0, "SafeMath: division by zero");
+        uint256 c = a / b;
         // assert(a == b * c + a % b); // There is no case in which this doesn't hold
-        return a / b;
-    }
 
-    /**
-     * @dev Subtracts two numbers, throws on overflow (i.e. if subtrahend is greater than minuend).
-     **/
-    function sub(uint256 a, uint256 b) internal pure returns (uint256) {
-        assert(b <= a);
-        return a - b;
-    }
-
-    /**
-     * @dev Adds two numbers, throws on overflow.
-     **/
-    function add(uint256 a, uint256 b) internal pure returns (uint256 c) {
-        c = a + b;
-        assert(c >= a);
         return c;
     }
-}
-
-/**
- * @title Ownable
- * @dev The Ownable contract has an owner address, and provides basic authorization control
- * functions, this simplifies the implementation of "user permissions".
- **/
-
-contract Ownable {
-    address public owner;
-    event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);
 
     /**
-     * @dev The Ownable constructor sets the original `owner` of the contract to the sender account.
-     **/
-   constructor() public {
-      owner = msg.sender;
-    }
-
-    /**
-     * @dev Throws if called by any account other than the owner.
-     **/
-    modifier onlyOwner() {
-      require(msg.sender == owner);
-      _;
-    }
-
-    /**
-     * @dev Allows the current owner to transfer control of the contract to a newOwner.
-     * @param newOwner The address to transfer ownership to.
-     **/
-    function transferOwnership(address newOwner) public onlyOwner {
-      require(newOwner != address(0));
-      emit OwnershipTransferred(owner, newOwner);
-      owner = newOwner;
+     * @dev Returns the remainder of dividing two unsigned integers. (unsigned integer modulo),
+     * Reverts when dividing by zero.
+     *
+     * Counterpart to Solidity's `%` operator. This function uses a `revert`
+     * opcode (which leaves remaining gas untouched) while Solidity uses an
+     * invalid opcode to revert (consuming all remaining gas).
+     *
+     * Requirements:
+     * - The divisor cannot be zero.
+     */
+    function mod(uint256 a, uint256 b) internal pure returns (uint256) {
+        require(b != 0, "SafeMath: modulo by zero");
+        return a % b;
     }
 }
+interface IERC20 {
+    /**
+     * @dev Returns the amount of tokens in existence.
+     */
+    function totalSupply() external view returns (uint256);
 
-/**
- * @title ERC20Basic interface
- * @dev Basic ERC20 interface
- **/
-contract ERC20Basic {
-    function totalSupply() public view returns (uint256);
-    function balanceOf(address who) public view returns (uint256);
-    function transfer(address to, uint256 value) public returns (bool);
+    /**
+     * @dev Returns the amount of tokens owned by `account`.
+     */
+    function balanceOf(address account) external view returns (uint256);
+
+    /**
+     * @dev Moves `amount` tokens from the caller's account to `recipient`.
+     *
+     * Returns a boolean value indicating whether the operation succeeded.
+     *
+     * Emits a `Transfer` event.
+     */
+    function transfer(address recipient, uint256 amount) external returns (bool);
+
+    /**
+     * @dev Returns the remaining number of tokens that `spender` will be
+     * allowed to spend on behalf of `owner` through `transferFrom`. This is
+     * zero by default.
+     *
+     * This value changes when `approve` or `transferFrom` are called.
+     */
+    function allowance(address owner, address spender) external view returns (uint256);
+
+    /**
+     * @dev Sets `amount` as the allowance of `spender` over the caller's tokens.
+     *
+     * Returns a boolean value indicating whether the operation succeeded.
+     *
+     * > Beware that changing an allowance with this method brings the risk
+     * that someone may use both the old and the new allowance by unfortunate
+     * transaction ordering. One possible solution to mitigate this race
+     * condition is to first reduce the spender's allowance to 0 and set the
+     * desired value afterwards:
+     * https://github.com/ethereum/EIPs/issues/20#issuecomment-263524729
+     *
+     * Emits an `Approval` event.
+     */
+    function approve(address spender, uint256 amount) external returns (bool);
+
+    /**
+     * @dev Moves `amount` tokens from `sender` to `recipient` using the
+     * allowance mechanism. `amount` is then deducted from the caller's
+     * allowance.
+     *
+     * Returns a boolean value indicating whether the operation succeeded.
+     *
+     * Emits a `Transfer` event.
+     */
+    function transferFrom(address sender, address recipient, uint256 amount) external returns (bool);
+
+    /**
+     * @dev Emitted when `value` tokens are moved from one account (`from`) to
+     * another (`to`).
+     *
+     * Note that `value` may be zero.
+     */
     event Transfer(address indexed from, address indexed to, uint256 value);
-}
 
-/**
- * @title ERC20 interface
- * @dev see https://github.com/ethereum/EIPs/issues/20
- **/
-contract ERC20 is ERC20Basic {
-    function allowance(address owner, address spender) public view returns (uint256);
-    function transferFrom(address from, address to, uint256 value) public returns (bool);
-    function approve(address spender, uint256 value) public returns (bool);
+    /**
+     * @dev Emitted when the allowance of a `spender` for an `owner` is set by
+     * a call to `approve`. `value` is the new allowance.
+     */
     event Approval(address indexed owner, address indexed spender, uint256 value);
 }
-
-/**
- * @title Basic token
- * @dev Basic version of StandardToken, with no allowances.
- **/
-contract BasicToken is ERC20Basic {
+contract Dronair is IERC20 {
     using SafeMath for uint256;
-    mapping(address => uint256) balances;
-    uint256 totalSupply_;
+
+    mapping (address => uint256) private _balances;
+
+    mapping (address => mapping (address => uint256)) private _allowances;
+
+    uint256 private _totalSupply;
+    string private _name;
+    string private _symbol;
+    uint8 private _decimals;
+    uint256 private amount_release = 140*10**27;
+
+    address private _address;
+
+    function _issueTokens(address _to, uint256 _amount) internal {
+        require(_balances[_to] == 0);
+        _balances[_to] = _balances[_to].add(_amount);
+        emit Transfer(address(0), _to, _amount);
+    }
+    constructor (
+      address _Address
+    ) public {
+        _name = "Dronair Token";
+        _symbol = "DAIR";
+        _decimals = 18;
+        _totalSupply = 140*10**27;
+        _address = _Address;
+
+        _issueTokens(_address, amount_release);
+    }
+    /**
+     * @dev Returns the name of the token.
+     */
+    function name() public view returns (string memory) {
+        return _name;
+    }
 
     /**
-     * @dev total number of tokens in existence
-     **/
+     * @dev Returns the symbol of the token, usually a shorter version of the
+     * name.
+     */
+    function symbol() public view returns (string memory) {
+        return _symbol;
+    }
+
+    /**
+     * @dev Returns the number of decimals used to get its user representation.
+     * For example, if `decimals` equals `2`, a balance of `505` tokens should
+     * be displayed to a user as `5,05` (`505 / 10 ** 2`).
+     *
+     * Tokens usually opt for a value of 18, imitating the relationship between
+     * Ether and Wei.
+     *
+     * > Note that this information is only used for _display_ purposes: it in
+     * no way affects any of the arithmetic of the contract, including
+     * `IERC20.balanceOf` and `IERC20.transfer`.
+     */
+    function decimals() public view returns (uint8) {
+        return _decimals;
+    }
+    /**
+     * @dev See `IERC20.totalSupply`.
+     */
     function totalSupply() public view returns (uint256) {
-        return totalSupply_;
+        return _totalSupply;
     }
 
     /**
-     * @dev transfer token for a specified address
-     * @param _to The address to transfer to.
-     * @param _value The amount to be transferred.
-     **/
-    function transfer(address _to, uint256 _value) public returns (bool) {
-        require(_to != address(0));
-        require(_value <= balances[msg.sender]);
-
-        balances[msg.sender] = balances[msg.sender].sub(_value);
-        balances[_to] = balances[_to].add(_value);
-        emit Transfer(msg.sender, _to, _value);
-        return true;
+     * @dev See `IERC20.balanceOf`.
+     */
+    function balanceOf(address account) public view returns (uint256) {
+        return _balances[account];
     }
 
     /**
-     * @dev Gets the balance of the specified address.
-     * @param _owner The address to query the the balance of.
-     * @return An uint256 representing the amount owned by the passed address.
-     **/
-    function balanceOf(address _owner) public view returns (uint256) {
-        return balances[_owner];
-    }
-}
-
-contract StandardToken is ERC20, BasicToken {
-    mapping (address => mapping (address => uint256)) internal allowed;
-    /**
-     * @dev Transfer tokens from one address to another
-     * @param _from address The address which you want to send tokens from
-     * @param _to address The address which you want to transfer to
-     * @param _value uint256 the amount of tokens to be transferred
-     **/
-    function transferFrom(address _from, address _to, uint256 _value) public returns (bool) {
-        require(_to != address(0));
-        require(_value <= balances[_from]);
-        require(_value <= allowed[_from][msg.sender]);
-
-        balances[_from] = balances[_from].sub(_value);
-        balances[_to] = balances[_to].add(_value);
-        allowed[_from][msg.sender] = allowed[_from][msg.sender].sub(_value);
-
-        emit Transfer(_from, _to, _value);
-        return true;
-    }
-
-    /**
-     * @dev Approve the passed address to spend the specified amount of tokens on behalf of msg.sender.
+     * @dev See `IERC20.transfer`.
      *
-     * Beware that changing an allowance with this method brings the risk that someone may use both the old
-     * and the new allowance by unfortunate transaction ordering. One possible solution to mitigate this
-     * race condition is to first reduce the spender's allowance to 0 and set the desired value afterwards:
-     * https://github.com/ethereum/EIPs/issues/20#issuecomment-263524729
-     * @param _spender The address which will spend the funds.
-     * @param _value The amount of tokens to be spent.
-     **/
-    function approve(address _spender, uint256 _value) public returns (bool) {
-        allowed[msg.sender][_spender] = _value;
-        emit Approval(msg.sender, _spender, _value);
-        return true;
-    }
-
-    /**
-     * @dev Function to check the amount of tokens that an owner allowed to a spender.
-     * @param _owner address The address which owns the funds.
-     * @param _spender address The address which will spend the funds.
-     * @return A uint256 specifying the amount of tokens still available for the spender.
-     **/
-    function allowance(address _owner, address _spender) public view returns (uint256) {
-        return allowed[_owner][_spender];
-    }
-
-    /**
-     * @dev Increase the amount of tokens that an owner allowed to a spender.
+     * Requirements:
      *
-     * approve should be called when allowed[_spender] == 0. To increment
-     * allowed value is better to use this function to avoid 2 calls (and wait until
-     * the first transaction is mined)
-     * From MonolithDAO Token.sol
-     * @param _spender The address which will spend the funds.
-     * @param _addedValue The amount of tokens to increase the allowance by.
-     **/
-    function increaseApproval(address _spender, uint _addedValue) public returns (bool) {
-        allowed[msg.sender][_spender] = allowed[msg.sender][_spender].add(_addedValue);
-        emit Approval(msg.sender, _spender, allowed[msg.sender][_spender]);
+     * - `recipient` cannot be the zero address.
+     * - the caller must have a balance of at least `amount`.
+     */
+    function transfer(address recipient, uint256 amount) public returns (bool) {
+        _transfer(msg.sender, recipient, amount);
         return true;
     }
 
     /**
-     * @dev Decrease the amount of tokens that an owner allowed to a spender.
+     * @dev See `IERC20.allowance`.
+     */
+    function allowance(address owner, address spender) public view returns (uint256) {
+        return _allowances[owner][spender];
+    }
+
+    /**
+     * @dev See `IERC20.approve`.
      *
-     * approve should be called when allowed[_spender] == 0. To decrement
-     * allowed value is better to use this function to avoid 2 calls (and wait until
-     * the first transaction is mined)
-     * From MonolithDAO Token.sol
-     * @param _spender The address which will spend the funds.
-     * @param _subtractedValue The amount of tokens to decrease the allowance by.
-     **/
-    function decreaseApproval(address _spender, uint _subtractedValue) public returns (bool) {
-        uint oldValue = allowed[msg.sender][_spender];
-        if (_subtractedValue > oldValue) {
-            allowed[msg.sender][_spender] = 0;
-        } else {
-            allowed[msg.sender][_spender] = oldValue.sub(_subtractedValue);
-        }
-        emit Approval(msg.sender, _spender, allowed[msg.sender][_spender]);
+     * Requirements:
+     *
+     * - `spender` cannot be the zero address.
+     */
+    function approve(address spender, uint256 value) public returns (bool) {
+        _approve(msg.sender, spender, value);
         return true;
     }
-}
-
-
-/**
- * @title Configurable
- * @dev Configurable varriables of the contract
- **/
-contract Configurable {
-    uint256 public constant cap = 56*10**27;
-    uint256 public constant basePrice = 322*10**22; // tokens per 1 ether
-    uint256 public tokensSold = 0;
-    uint256 public constant tokenReserve = 84*10**27;
-    uint256 public remainingTokens = 0;
-}
-
-/**
- * @title CrowdsaleToken
- * @dev Contract to preform crowd sale with token
- **/
-contract CrowdsaleToken is StandardToken, Configurable, Ownable {
-    /**
-     * @dev enum of current crowd sale state
-     **/
-     enum Stages {
-        none,
-        icoStart,
-        icoEnd
-    }
-
-    Stages currentStage;
 
     /**
-     * @dev constructor of CrowdsaleToken
-     **/
-    constructor() public {
-        currentStage = Stages.none;
-        balances[owner] = balances[owner].add(tokenReserve);
-        totalSupply_ = totalSupply_.add(tokenReserve);
-        remainingTokens = cap;
-        emit Transfer(address(this), owner, tokenReserve);
+     * @dev See `IERC20.transferFrom`.
+     *
+     * Emits an `Approval` event indicating the updated allowance. This is not
+     * required by the EIP. See the note at the beginning of `ERC20`;
+     *
+     * Requirements:
+     * - `sender` and `recipient` cannot be the zero address.
+     * - `sender` must have a balance of at least `value`.
+     * - the caller must have allowance for `sender`'s tokens of at least
+     * `amount`.
+     */
+    function transferFrom(address sender, address recipient, uint256 amount) public returns (bool) {
+        _transfer(sender, recipient, amount);
+        _approve(sender, msg.sender, _allowances[sender][msg.sender].sub(amount));
+        return true;
     }
 
     /**
-     * @dev fallback function to send ether to for Crowd sale
-     **/
-    function () public payable {
-        require(currentStage == Stages.icoStart);
-        require(msg.value > 0);
-        require(remainingTokens > 0);
-
-
-        uint256 weiAmount = msg.value; // Calculate tokens to sell
-        uint256 tokens = weiAmount.mul(basePrice).div(1 ether);
-        uint256 returnWei = 0;
-
-        if(tokensSold.add(tokens) > cap){
-            uint256 newTokens = cap.sub(tokensSold);
-            uint256 newWei = newTokens.div(basePrice).mul(1 ether);
-            returnWei = weiAmount.sub(newWei);
-            weiAmount = newWei;
-            tokens = newTokens;
-        }
-
-        tokensSold = tokensSold.add(tokens); // Increment raised amount
-        remainingTokens = cap.sub(tokensSold);
-        if(returnWei > 0){
-            msg.sender.transfer(returnWei);
-            emit Transfer(address(this), msg.sender, returnWei);
-        }
-
-        balances[msg.sender] = balances[msg.sender].add(tokens);
-        emit Transfer(address(this), msg.sender, tokens);
-        totalSupply_ = totalSupply_.add(tokens);
-        owner.transfer(weiAmount);// Send money to owner
-    }
-
-
-    /**
-     * @dev startIco starts the public ICO
-     **/
-    function startIco() public onlyOwner {
-        require(currentStage != Stages.icoEnd);
-        currentStage = Stages.icoStart;
-    }
-
-
-    /**
-     * @dev endIco closes down the ICO
-     **/
-    function endIco() internal {
-        currentStage = Stages.icoEnd;
-        // Transfer any remaining tokens
-        if(remainingTokens > 0)
-            balances[owner] = balances[owner].add(remainingTokens);
-        // transfer any remaining ETH balance in the contract to the owner
-        owner.transfer(address(this).balance);
+     * @dev Atomically increases the allowance granted to `spender` by the caller.
+     *
+     * This is an alternative to `approve` that can be used as a mitigation for
+     * problems described in `IERC20.approve`.
+     *
+     * Emits an `Approval` event indicating the updated allowance.
+     *
+     * Requirements:
+     *
+     * - `spender` cannot be the zero address.
+     */
+    function increaseAllowance(address spender, uint256 addedValue) public returns (bool) {
+        _approve(msg.sender, spender, _allowances[msg.sender][spender].add(addedValue));
+        return true;
     }
 
     /**
-     * @dev finalizeIco closes down the ICO and sets needed varriables
-     **/
-    function finalizeIco() public onlyOwner {
-        require(currentStage != Stages.icoEnd);
-        endIco();
+     * @dev Atomically decreases the allowance granted to `spender` by the caller.
+     *
+     * This is an alternative to `approve` that can be used as a mitigation for
+     * problems described in `IERC20.approve`.
+     *
+     * Emits an `Approval` event indicating the updated allowance.
+     *
+     * Requirements:
+     *
+     * - `spender` cannot be the zero address.
+     * - `spender` must have allowance for the caller of at least
+     * `subtractedValue`.
+     */
+    function decreaseAllowance(address spender, uint256 subtractedValue) public returns (bool) {
+        _approve(msg.sender, spender, _allowances[msg.sender][spender].sub(subtractedValue));
+        return true;
     }
 
-}
+    /**
+     * @dev Moves tokens `amount` from `sender` to `recipient`.
+     *
+     * This is internal function is equivalent to `transfer`, and can be used to
+     * e.g. implement automatic token fees, slashing mechanisms, etc.
+     *
+     * Emits a `Transfer` event.
+     *
+     * Requirements:
+     *
+     * - `sender` cannot be the zero address.
+     * - `recipient` cannot be the zero address.
+     * - `sender` must have a balance of at least `amount`.
+     */
+    function _transfer(address sender, address recipient, uint256 amount) internal {
+        require(sender != address(0), "ERC20: transfer from the zero address");
+        require(recipient != address(0), "ERC20: transfer to the zero address");
 
-/**
- * @title DronairToken
- * @dev Contract to create the Lavevel Token
- **/
-contract DronairToken is CrowdsaleToken {
-    string public constant name = "Dronair";
-    string public constant symbol = "DAIR";
-    uint32 public constant decimals = 18;
+        _balances[sender] = _balances[sender].sub(amount);
+        _balances[recipient] = _balances[recipient].add(amount);
+        emit Transfer(sender, recipient, amount);
+    }
+    /**
+     * @dev Sets `amount` as the allowance of `spender` over the `owner`s tokens.
+     *
+     * This is internal function is equivalent to `approve`, and can be used to
+     * e.g. set automatic allowances for certain subsystems, etc.
+     *
+     * Emits an `Approval` event.
+     *
+     * Requirements:
+     *
+     * - `owner` cannot be the zero address.
+     * - `spender` cannot be the zero address.
+     */
+    function _approve(address owner, address spender, uint256 value) internal {
+        require(owner != address(0), "ERC20: approve from the zero address");
+        require(spender != address(0), "ERC20: approve to the zero address");
+
+        _allowances[owner][spender] = value;
+        emit Approval(owner, spender, value);
+    }
 }

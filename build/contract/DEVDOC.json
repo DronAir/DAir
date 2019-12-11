@@ -1,71 +1,37 @@
 {
 	"methods": {
 		"allowance(address,address)": {
-			"details": "Function to check the amount of tokens that an owner allowed to a spender.\r",
-			"params": {
-				"_owner": "address The address which owns the funds.\r",
-				"_spender": "address The address which will spend the funds.\r"
-			},
-			"return": "A uint256 specifying the amount of tokens still available for the spender.\r*"
+			"details": "See `IERC20.allowance`."
 		},
 		"approve(address,uint256)": {
-			"details": "Approve the passed address to spend the specified amount of tokens on behalf of msg.sender.\r      * Beware that changing an allowance with this method brings the risk that someone may use both the old\r and the new allowance by unfortunate transaction ordering. One possible solution to mitigate this\r race condition is to first reduce the spender's allowance to 0 and set the desired value afterwards:\r https://github.com/ethereum/EIPs/issues/20#issuecomment-263524729\r",
-			"params": {
-				"_spender": "The address which will spend the funds.\r",
-				"_value": "The amount of tokens to be spent.\r*"
-			}
+			"details": "See `IERC20.approve`.     * Requirements:     * - `spender` cannot be the zero address."
 		},
 		"balanceOf(address)": {
-			"details": "Gets the balance of the specified address.\r",
-			"params": {
-				"_owner": "The address to query the the balance of.\r"
-			},
-			"return": "An uint256 representing the amount owned by the passed address.\r*"
+			"details": "See `IERC20.balanceOf`."
 		},
-		"decreaseApproval(address,uint256)": {
-			"details": "Decrease the amount of tokens that an owner allowed to a spender.\r      * approve should be called when allowed[_spender] == 0. To decrement\r allowed value is better to use this function to avoid 2 calls (and wait until\r the first transaction is mined)\r From MonolithDAO Token.sol\r",
-			"params": {
-				"_spender": "The address which will spend the funds.\r",
-				"_subtractedValue": "The amount of tokens to decrease the allowance by.\r*"
-			}
+		"decimals()": {
+			"details": "Returns the number of decimals used to get its user representation. For example, if `decimals` equals `2`, a balance of `505` tokens should be displayed to a user as `5,05` (`505 / 10 ** 2`).     * Tokens usually opt for a value of 18, imitating the relationship between Ether and Wei.     * > Note that this information is only used for _display_ purposes: it in no way affects any of the arithmetic of the contract, including `IERC20.balanceOf` and `IERC20.transfer`."
 		},
-		"finalizeIco()": {
-			"details": "finalizeIco closes down the ICO and sets needed varriables\r*"
+		"decreaseAllowance(address,uint256)": {
+			"details": "Atomically decreases the allowance granted to `spender` by the caller.     * This is an alternative to `approve` that can be used as a mitigation for problems described in `IERC20.approve`.     * Emits an `Approval` event indicating the updated allowance.     * Requirements:     * - `spender` cannot be the zero address. - `spender` must have allowance for the caller of at least `subtractedValue`."
 		},
-		"increaseApproval(address,uint256)": {
-			"details": "Increase the amount of tokens that an owner allowed to a spender.\r      * approve should be called when allowed[_spender] == 0. To increment\r allowed value is better to use this function to avoid 2 calls (and wait until\r the first transaction is mined)\r From MonolithDAO Token.sol\r",
-			"params": {
-				"_addedValue": "The amount of tokens to increase the allowance by.\r*",
-				"_spender": "The address which will spend the funds.\r"
-			}
+		"increaseAllowance(address,uint256)": {
+			"details": "Atomically increases the allowance granted to `spender` by the caller.     * This is an alternative to `approve` that can be used as a mitigation for problems described in `IERC20.approve`.     * Emits an `Approval` event indicating the updated allowance.     * Requirements:     * - `spender` cannot be the zero address."
 		},
-		"startIco()": {
-			"details": "startIco starts the public ICO\r*"
+		"name()": {
+			"details": "Returns the name of the token."
+		},
+		"symbol()": {
+			"details": "Returns the symbol of the token, usually a shorter version of the name."
 		},
 		"totalSupply()": {
-			"details": "total number of tokens in existence\r*"
+			"details": "See `IERC20.totalSupply`."
 		},
 		"transfer(address,uint256)": {
-			"details": "transfer token for a specified address\r",
-			"params": {
-				"_to": "The address to transfer to.\r",
-				"_value": "The amount to be transferred.\r*"
-			}
+			"details": "See `IERC20.transfer`.     * Requirements:     * - `recipient` cannot be the zero address. - the caller must have a balance of at least `amount`."
 		},
 		"transferFrom(address,address,uint256)": {
-			"details": "Transfer tokens from one address to another\r",
-			"params": {
-				"_from": "address The address which you want to send tokens from\r",
-				"_to": "address The address which you want to transfer to\r",
-				"_value": "uint256 the amount of tokens to be transferred\r*"
-			}
-		},
-		"transferOwnership(address)": {
-			"details": "Allows the current owner to transfer control of the contract to a newOwner.\r",
-			"params": {
-				"newOwner": "The address to transfer ownership to.\r*"
-			}
+			"details": "See `IERC20.transferFrom`.     * Emits an `Approval` event indicating the updated allowance. This is not required by the EIP. See the note at the beginning of `ERC20`;     * Requirements: - `sender` and `recipient` cannot be the zero address. - `sender` must have a balance of at least `value`. - the caller must have allowance for `sender`'s tokens of at least `amount`."
 		}
-	},
-	"title": "DronairToken\r"
+	}
 }
